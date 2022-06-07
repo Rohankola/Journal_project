@@ -1,0 +1,77 @@
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  name: myjournal
+#  annotations:
+#    kubernetes.io/ingress.class: nginx
+#    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+#spec:
+#  rules:
+#  - host: myjournal-test.com
+#    http:
+#      paths:
+#      backend:
+#        serviceName: flask-service
+#        servicePort: http
+
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  name: myjournal
+#spec:
+#  rules:
+#  - host: myjournal.test.com
+#    http:
+#      paths:
+#      - path: /myjournal
+#        pathType: Prefix
+#        backend:
+#          service:
+#            name: service1
+#            port:
+#              number: 4200
+#      - path: /test
+#        pathType: Prefix
+#        backend:
+#          service:
+#            name: service2
+#            port:
+#              number: 8080
+
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  name: myjournal
+#  annotations:
+#spec:
+#  rules:
+#  - host: https-myjournal.test.com
+#    http:
+#      paths:
+#      - path: /
+#        pathType: Prefix
+#        backend:
+#          service:
+#            name: flask
+#            port:
+#              number: 5000
+
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myjournal
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: myjournal.info
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: myjournal
+                port:
+                  number: 8080
