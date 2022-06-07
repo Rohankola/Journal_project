@@ -1,0 +1,67 @@
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  creationTimestamp: null
+#  labels:
+#    app: Journal
+#  name: myjournal
+#spec:
+#  replicas: 5
+#  selector:
+#    matchLabels:
+#      app: Journal
+#  strategy: {}
+#  template:
+#    metadata:
+#      creationTimestamp: null
+#      labels:
+#        app: Journal
+#    spec:
+#      containers:
+#      - image: image1
+#        name: journal-server
+#        imagePullPolicy: Never
+#        resources: {}
+#        ports:
+#          - containerPort: 5000
+#status: {}
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: myjournal
+spec:
+  selector:
+    app: Journal
+  ports:
+  - protocol: "TCP"
+    port: 5000
+    targetPort: 5000
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myjournal
+spec:
+  selector:
+    matchLabels:
+      app: Journal
+  replicas: 5
+  template:
+    metadata:
+      labels:
+        app: Journal
+    spec:
+      containers:
+      - name: myjournal
+        image: image1
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5000
+#          resources:
+#            limits:
+#              cpu: 500m
+#            requests:
+#              cpu: 200m
